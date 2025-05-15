@@ -16,6 +16,15 @@
 | Actualizar datos personales | PUT | /api/usuarios/{id}/datos |
 | Guardar profesional como favorito | POST | /api/usuarios/{id}/favoritos |
 
+## 🟩 Sistema de Comunicación
+
+| Funcionalidad | Método | Endpoint |
+|---------------|--------|----------|
+| Comunicación vía WhatsApp o correo | POST | /api/comunicacion/externa |
+| Notificaciones al usuario | GET | /api/notificaciones/{usuario_id} |
+| Publicacion visible para todos| POST | /api/publicaciones|
+| Solicitud de servicios | POST | /api/servicios/solicitud |
+
 ## 🟥 Sistema de Búsqueda
 
 | Funcionalidad | Método | Endpoint |
