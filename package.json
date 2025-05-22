@@ -1,0 +1,27 @@
+{
+  "name": "backend-pasaeldato",
+  "version": "1.0.0",
+  "description": "Backend de la pagina pasaeldato",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LopsidedBus132/Backend-PasaelDato.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/LopsidedBus132/Backend-PasaelDato/issues"
+  },
+  "homepage": "https://github.com/LopsidedBus132/Backend-PasaelDato#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0"
+  }
+}

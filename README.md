@@ -1,74 +1,37 @@
 # Backend-PasaelDato
 
-# 📋 Lista de Requerimientos Backend (API RESTful)
+# Cómo levantar este proyecto
 
-## 🟨 Gestión de Usuarios
+## Requisitos
 
-| Funcionalidad | Método | Endpoint |
-|---------------|--------|----------|
-| Registro de usuarios | POST | /api/usuarios/register |
-| Registro con Google | POST | /api/usuarios/register/google |
-| Recuperación de contraseña | POST | /api/usuarios/recuperar |
-| Validación de identidad | POST | /api/usuarios/validar-identidad |
-| Ver perfil de usuario | GET | /api/usuarios/{id} |
-| Añadir campos personalizables | PUT | /api/usuarios/{id}/personalizacion |
-| Edición de perfil | PUT | /api/usuarios/{id} |
-| Actualizar datos personales | PUT | /api/usuarios/{id}/datos |
-| Guardar profesional como favorito | POST | /api/usuarios/{id}/favoritos |
+- Tener instalado [Node.js](https://nodejs.org/) (versión 16 o superior recomendada)
+- Tener instalado [npm](https://www.npmjs.com/) (viene con Node.js)
+- Tener instalado [PostgreSQL](https://www.postgresql.org/download/)(versión 16 o superior)
 
-## 🟩 Sistema de Comunicación
+---
+## Cargar base de datos
 
-| Funcionalidad | Método | Endpoint |
-|---------------|--------|----------|
-| Comunicación vía WhatsApp o correo | POST | /api/comunicacion/externa |
-| Notificaciones al usuario | GET | /api/notificaciones/{usuario_id} |
-| Publicacion visible para todos| POST | /api/publicaciones|
-| Solicitud de servicios | POST | /api/servicios/solicitud |
+1. Abrir **pgadmin**.
+2. Crear una base de datos preferiblemente llamada `PasaElDato`.
+3. Click derecho en la DB creada > Herramienta de consultas > Abrir archivo `BaseDeDatos.sql`.
+4. Ejecutar usando `F5` o el botón "play" de la aplicación.
+---
+## Pasos para iniciar el proyecto
 
-## 🟥 Sistema de Búsqueda
+```bash
+# Clonar el repositorio
+git clone https://github.com/LopsidedBus132/Backend-PasaelDato
+cd Backend-PasaelDato
+# O usando la aplicacion de github desktop
 
-| Funcionalidad | Método | Endpoint |
-|---------------|--------|----------|
-| Buscador de profesionales | GET | /api/profesionales/buscar |
-| Búsqueda optimizada (<3s) | GET | /api/profesionales/buscar |
-| Filtro avanzado | GET | /api/profesionales/filtrar?... |
-| Ver perfil profesional | GET | /api/profesionales/{id} |
-| Redirección a perfil desde búsqueda | GET | /api/profesionales/{id} |
+# Instalar dependencias
+npm install
 
-## 🟪 Sistema de Calificación
+# Ejecutar el servidor
+node app.js o npm run start
 
-| Funcionalidad | Método | Endpoint |
-|---------------|--------|----------|
-| Puntuar profesional | POST | /api/profesionales/{id}/calificacion |
-| Comentar calificación | POST | /api/profesionales/{id}/comentarios |
-| Ver reseñas | GET | /api/profesionales/{id}/calificaciones |
-
-## 🟦 Sistema de Pago y Suscripción
-
-| Funcionalidad | Método | Endpoint |
-|---------------|--------|----------|
-| Seleccionar plan | POST | /api/suscripciones/seleccionar |
-| Cambiar plan | PUT | /api/suscripciones/cambiar |
-| Ver suscripciones | GET | /api/suscripciones |
-| Enviar factura al correo | POST | /api/facturacion/enviar |
-| Notificación de renovación | GET | /api/suscripciones/notificacion-renovacion |
-
-## 🟥 Seguridad y Soporte
-
-| Funcionalidad | Método | Endpoint |
-|---------------|--------|----------|
-| Protección de datos personales | Middleware | N/A |
-| Bloqueo tras intentos fallidos | POST | /api/auth/login |
-| Encriptación de contraseñas | Middleware | /register, /usuarios/{id} |
-| Error por credenciales inválidas | POST | /api/auth/login |
-| Autenticación 2FA (admin) | POST | /api/auth/2fa/verify |
-| Preguntas frecuentes (FAQ) | GET | /api/soporte/faq |
-| Formulario de contacto | POST | /api/soporte/contacto |
-
-## 🟦 Rendimiento y Disponibilidad
-
-| Requerimiento | Descripción |
-|---------------|-------------|
-| Alta disponibilidad | El sistema debe estar disponible el 99.9% del tiempo laboral |
-| Usuarios concurrentes | Soporte para al menos 500 usuarios concurrentes |
-| Recuperación ante fallos | Tiempo máximo de recuperación: 4 horas |
+# Abrir en el navegador
+# Luego, abre esta URL en tu navegador:
+# http://localhost:3000 o al puerto que tu designes en localhost
+```
+### Al iniciar el proyecto en "/" estan los requerimientos.

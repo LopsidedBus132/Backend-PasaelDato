@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>📋 Lista de Requerimientos Backend</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem;
+      line-height: 1.6;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: 2rem;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 0.6em;
+      text-align: left;
+    }
+    th {
+      background-color: #f0f0f0;
+    }
+    h1, h2 {
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+<h1>📋 Lista de Requerimientos Backend (API RESTful)</h1>
+
+<h2>🟨 Gestión de Usuarios</h2>
+<table>
+<thead>
+<tr><th>Funcionalidad</th><th>Método</th><th>Endpoint</th></tr>
+</thead>
+<tbody>
+<tr><td>Registro de usuarios</td><td>POST</td><td>/api/usuarios/register</td></tr>
+<tr><td>Registro con Google</td><td>POST</td><td>/api/usuarios/register/google</td></tr>
+<tr><td>Recuperación de contraseña</td><td>POST</td><td>/api/usuarios/recuperar</td></tr>
+<tr><td>Validación de identidad</td><td>POST</td><td>/api/usuarios/validar-identidad</td></tr>
+<tr><td>Ver perfil de usuario</td><td>GET</td><td>/api/usuarios/{id}</td></tr>
+<tr><td>Añadir campos personalizables</td><td>PUT</td><td>/api/usuarios/{id}/personalizacion</td></tr>
+<tr><td>Edición de perfil</td><td>PUT</td><td>/api/usuarios/{id}</td></tr>
+<tr><td>Actualizar datos personales</td><td>PUT</td><td>/api/usuarios/{id}/datos</td></tr>
+<tr><td>Guardar profesional como favorito</td><td>POST</td><td>/api/usuarios/{id}/favoritos</td></tr>
+</tbody>
+</table>
+
+<h2>🟩 Sistema de Comunicación</h2>
+<table>
+<thead>
+<tr><th>Funcionalidad</th><th>Método</th><th>Endpoint</th></tr>
+</thead>
+<tbody>
+<tr><td>Comunicación vía WhatsApp o correo</td><td>POST</td><td>/api/comunicacion/externa</td></tr>
+<tr><td>Notificaciones al usuario</td><td>GET</td><td>/api/notificaciones/{usuario_id}</td></tr>
+<tr><td>Publicacion visible para todos</td><td>POST</td><td>/api/publicaciones</td></tr>
+<tr><td>Solicitud de servicios</td><td>POST</td><td>/api/servicios/solicitud</td></tr>
+</tbody>
+</table>
+
+<h2>🟥 Sistema de Búsqueda</h2>
+<table>
+<thead>
+<tr><th>Funcionalidad</th><th>Método</th><th>Endpoint</th></tr>
+</thead>
+<tbody>
+<tr><td>Buscador de profesionales</td><td>GET</td><td>/api/profesionales/buscar</td></tr>
+<tr><td>Búsqueda optimizada (&lt;3s)</td><td>GET</td><td>/api/profesionales/buscar</td></tr>
+<tr><td>Filtro avanzado</td><td>GET</td><td>/api/profesionales/filtrar?... </td></tr>
+<tr><td>Ver perfil profesional</td><td>GET</td><td>/api/profesionales/{id}</td></tr>
+<tr><td>Redirección a perfil desde búsqueda</td><td>GET</td><td>/api/profesionales/{id}</td></tr>
+</tbody>
+</table>
+
+<h2>🟪 Sistema de Calificación</h2>
+<table>
+<thead>
+<tr><th>Funcionalidad</th><th>Método</th><th>Endpoint</th></tr>
+</thead>
+<tbody>
+<tr><td>Puntuar profesional</td><td>POST</td><td>/api/profesionales/{id}/calificacion</td></tr>
+<tr><td>Comentar calificación</td><td>POST</td><td>/api/profesionales/{id}/comentarios</td></tr>
+<tr><td>Ver reseñas</td><td>GET</td><td>/api/profesionales/{id}/calificaciones</td></tr>
+</tbody>
+</table>
+
+<h2>🟦 Sistema de Pago y Suscripción</h2>
+<table>
+<thead>
+<tr><th>Funcionalidad</th><th>Método</th><th>Endpoint</th></tr>
+</thead>
+<tbody>
+<tr><td>Seleccionar plan</td><td>POST</td><td>/api/suscripciones/seleccionar</td></tr>
+<tr><td>Cambiar plan</td><td>PUT</td><td>/api/suscripciones/cambiar</td></tr>
+<tr><td>Ver suscripciones</td><td>GET</td><td>/api/suscripciones</td></tr>
+<tr><td>Enviar factura al correo</td><td>POST</td><td>/api/facturacion/enviar</td></tr>
+<tr><td>Notificación de renovación</td><td>GET</td><td>/api/suscripciones/notificacion-renovacion</td></tr>
+</tbody>
+</table>
+
+<h2>🟥 Seguridad y Soporte</h2>
+<table>
+<thead>
+<tr><th>Funcionalidad</th><th>Método</th><th>Endpoint</th></tr>
+</thead>
+<tbody>
+<tr><td>Protección de datos personales</td><td>Middleware</td><td>N/A</td></tr>
+<tr><td>Bloqueo tras intentos fallidos</td><td>POST</td><td>/api/auth/login</td></tr>
+<tr><td>Encriptación de contraseñas</td><td>Middleware</td><td>/register, /usuarios/{id}</td></tr>
+<tr><td>Error por credenciales inválidas</td><td>POST</td><td>/api/auth/login</td></tr>
+<tr><td>Autenticación 2FA (admin)</td><td>POST</td><td>/api/auth/2fa/verify</td></tr>
+<tr><td>Preguntas frecuentes (FAQ)</td><td>GET</td><td>/api/soporte/faq</td></tr>
+<tr><td>Formulario de contacto</td><td>POST</td><td>/api/soporte/contacto</td></tr>
+</tbody>
+</table>
+
+<h2>🟦 Rendimiento y Disponibilidad</h2>
+<table>
+<thead>
+<tr><th>Requerimiento</th><th>Descripción</th></tr>
+</thead>
+<tbody>
+<tr><td>Alta disponibilidad</td><td>El sistema debe estar disponible el 99.9% del tiempo laboral</td></tr>
+<tr><td>Usuarios concurrentes</td><td>Soporte para al menos 500 usuarios concurrentes</td></tr>
+<tr><td>Recuperación ante fallos</td><td>Tiempo máximo de recuperación: 4 horas</td></tr>
+</tbody>
+</table>
+
+</body>
+</html>
