@@ -34,31 +34,27 @@
 <h2>🟨 Gestión de Usuarios</h2>
 <table>
 <thead>
-<tr><th>Funcionalidad</th><th>Método</th><th>Endpoint</th></tr>
+<tr><th>Funcionalidad</th><th>Método</th><th>Endpoint</th><th>Parametros</th></tr>
 </thead>
 <tbody>
-<tr><td>Registro de usuarios</td><td>POST</td><td>/api/usuarios/register</td></tr>
-<tr><td>Registro con Google</td><td>POST</td><td>/api/usuarios/register/google</td></tr>
-<tr><td>Recuperación de contraseña</td><td>POST</td><td>/api/usuarios/recuperar</td></tr>
-<tr><td>Validación de identidad</td><td>POST</td><td>/api/usuarios/validar-identidad</td></tr>
-<tr><td>Ver perfil de usuario</td><td>GET</td><td>/api/usuarios/{id}</td></tr>
-<tr><td>Añadir campos personalizables</td><td>PUT</td><td>/api/usuarios/{id}/personalizacion</td></tr>
-<tr><td>Edición de perfil</td><td>PUT</td><td>/api/usuarios/{id}</td></tr>
-<tr><td>Actualizar datos personales</td><td>PUT</td><td>/api/usuarios/{id}/datos</td></tr>
-<tr><td>Guardar profesional como favorito</td><td>POST</td><td>/api/usuarios/{id}/favoritos</td></tr>
+<tr><td>Registro de usuarios con firebase</td><td>POST</td><td>/api/usuarios/register</td><td>Se recibiran los datos de usuario y el token de firebase</td></tr>
+<tr><td>Inicio de sesion de usuarios con firebase</td><td>POST</td><td>/api/usuarios/login</td><td>Se recibira token de firebase y se devuelve token JWT propio</td></tr>
+<tr><td>Ver perfil de usuario</td><td>GET</td><td>/api/usuarios/{id}</td><td>Se recibira id del usuario</td></tr>
+<tr><td>Edición de perfil</td><td>PATCH</td><td>/api/usuarios/{id}</td><td>Se recibira id del usuario y los campos que van a modificar</td></tr>
+<tr><td>Guardar profesional como favorito</td><td>POST</td><td>/api/usuarios/{id}/favoritos</td><td>Se recibira id de usuario y el id del trabajador</td></tr>
 </tbody>
 </table>
 
 <h2>🟩 Sistema de Comunicación</h2>
 <table>
 <thead>
-<tr><th>Funcionalidad</th><th>Método</th><th>Endpoint</th></tr>
+<tr><th>Funcionalidad</th><th>Método</th><th>Endpoint</th><th>Parametros</th></tr>
 </thead>
 <tbody>
-<tr><td>Comunicación vía WhatsApp o correo</td><td>POST</td><td>/api/comunicacion/externa</td></tr>
-<tr><td>Notificaciones al usuario</td><td>GET</td><td>/api/notificaciones/{usuario_id}</td></tr>
-<tr><td>Publicacion visible para todos</td><td>POST</td><td>/api/publicaciones</td></tr>
-<tr><td>Solicitud de servicios</td><td>POST</td><td>/api/servicios/solicitud</td></tr>
+<tr><td>Generar enlace de redirección a WhatsApp con mensaje prellenado</td><td>GET</td><td>/api/whatsapp/link</td><td>Se recibira el id del trabajador</td></tr>
+<tr><td>Generar enlace de redirección a Correo con asunto y cuerpo prellenado</td><td>GET</td><td>/api/email/link</td><td>Se recibira el id del trabajador</td></tr>
+<tr><td>Notificaciones al usuario</td><td>GET</td><td>/api/notificaciones/{usuario_id}</td><td>Se recibira el id del usuario</td></tr>
+<tr><td>Publicacion visible para todos</td><td>POST</td><td>/api/publicaciones</td><td>Se reciben los datos relacionado a la Publicacion para escribirla en la BD</td></tr>
 </tbody>
 </table>
 
