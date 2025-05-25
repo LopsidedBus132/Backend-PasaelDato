@@ -2,10 +2,10 @@ const express = require('express');
 const router = express.Router();
 const verifyToken = require('../middlewares/verifyToken')
 
-const userController = require('../controllers/userController');
+const trabajadorController = require('../controllers/trabajador.controller');
 
 
-router.get('/', [verifyToken], userController.getHistories);
+router.get('/', [verifyToken], trabajadorController.getTrabajadores());
 
 
 
