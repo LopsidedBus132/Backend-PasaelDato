@@ -5,7 +5,8 @@ const verifyToken = require('../middlewares/verifyToken')
 const userController = require('../controllers/user.controller');
 
 
-router.get('/', [verifyToken], userController.getHistories);
+router.post('/', [verifyToken], userController.crearUsuario);
+router.get('/perfil', [verifyToken], userController.getUsuario);
 
 
 
