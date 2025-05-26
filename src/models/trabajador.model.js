@@ -1,8 +1,19 @@
 const db = require('../config/db');
 
-async function obtenerTrabajadores() {
+const obtenerTrabajadores = async () => {
   const { rows } = await db.query('SELECT * FROM trabajadores');
   return rows;
 }
 
-module.exports = { obtenerTrabajadores };
+const obtenerTrabajadorByUid = async (firebase_uid) => {
+  const result = await db.query(
+    'SELECT * FROM trabajador WHERE firebase_uid = $1',
+    [firebase_uid]
+  );
+  return result.rows[0];
+};
+
+module.exports = { 
+  obtenerTrabajadores,
+  obtenerTrabajadorByUid
+};

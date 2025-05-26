@@ -9,9 +9,10 @@ const { admin } = require('../firebase');
 const crearUsuario = async (req, res) => {
   try {
     const nuevoUsuario = await UsuarioModel.crearUsuario(req.body);
-    res.status(201).json({
-      mensaje: 'Usuario creado correctamente',
-      usuario: nuevoUsuario
+    return res.status(201).json({
+      success: true,
+      message: 'Usuario creado correctamente',
+      data: nuevoUsuario
     });
   } catch (error) {
     console.error('Error al crear usuario:', error);
@@ -27,8 +28,10 @@ const getUsuario = async (req, res) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'Token no proporcionado' });
-  }
+    return res.status(401).json({
+      success: false,
+      message: 'Token no proporcionado o inválido'
+    });  }
 
   const idToken = authHeader.split('Bearer ')[1];
 
@@ -39,13 +42,25 @@ const getUsuario = async (req, res) => {
     const usuario = await UsuarioModel.obtenerPorUid(firebase_uid);
 
     if (!usuario) {
-      return res.status(404).json({ error: 'Usuario no encontrado' });
+      return res.status(404).json({
+        success: false,
+        message: 'Usuario no encontrado'
+      });
     }
 
-    res.json(usuario);
+    return res.status(200).json({
+      success: true,
+      message: 'Usuario obtenido correctamente',
+      data: usuario
+    });
+
   } catch (error) {
-    console.error('Error al verificar token:', error);
-    res.status(401).json({ error: 'Token inválido o expirado' });
+    console.error('Error al verificar token o buscar usuario:', error);
+
+    return res.status(500).json({
+      success: false,
+      message: 'Ha ocurrido un error interno'
+    });
   }
 };
 

@@ -5,7 +5,8 @@ const verifyToken = require('../middlewares/verifyToken')
 const trabajadorController = require('../controllers/trabajador.controller');
 
 
-router.get('/', [verifyToken], trabajadorController.getTrabajadores());
+router.get('/', [verifyToken], trabajadorController.getTrabajadores);
+router.get('/:uid', [verifyToken], trabajadorController.getTrabajadorByUid);
 
 
 
