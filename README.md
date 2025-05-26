@@ -28,7 +28,7 @@ cd Backend-PasaelDato
 npm install
 
 # Ejecutar el servidor
-node app.js o npm run start
+npm run start
 
 # Abrir en el navegador
 # Luego, abre esta URL en tu navegador:

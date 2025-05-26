@@ -61,40 +61,36 @@
 <h2>🟥 Sistema de Búsqueda</h2>
 <table>
 <thead>
-<tr><th>Funcionalidad</th><th>Método</th><th>Endpoint</th></tr>
+<tr><th>Funcionalidad</th><th>Método</th><th>Endpoint</th><th>Parametros</th></tr>
 </thead>
 <tbody>
-<tr><td>Buscador de profesionales</td><td>GET</td><td>/api/profesionales/buscar</td></tr>
-<tr><td>Búsqueda optimizada (&lt;3s)</td><td>GET</td><td>/api/profesionales/buscar</td></tr>
-<tr><td>Filtro avanzado</td><td>GET</td><td>/api/profesionales/filtrar?... </td></tr>
-<tr><td>Ver perfil profesional</td><td>GET</td><td>/api/profesionales/{id}</td></tr>
-<tr><td>Redirección a perfil desde búsqueda</td><td>GET</td><td>/api/profesionales/{id}</td></tr>
+<tr><td>Buscador de profesionales</td><td>GET</td><td>/api/profesionales/buscar</td><td>Se recibira categoria del servicio</td></tr>
+<tr><td>Filtro avanzado</td><td>GET</td><td>/api/profesionales/filtrar?... </td><td>Se recibiria (forma dinamica)  filtrar entre precio (tarifa), calificacion y disponibilidad</td></tr>
+<tr><td>Ver perfil profesional</td><td>GET</td><td>/api/profesionales/{id}</td><td>se recibe id del profesional y se devuelven los datos de este</td></tr>
 </tbody>
 </table>
 
 <h2>🟪 Sistema de Calificación</h2>
 <table>
 <thead>
-<tr><th>Funcionalidad</th><th>Método</th><th>Endpoint</th></tr>
+<tr><th>Funcionalidad</th><th>Método</th><th>Endpoint</th><th>Parametros</th></tr>
 </thead>
 <tbody>
-<tr><td>Puntuar profesional</td><td>POST</td><td>/api/profesionales/{id}/calificacion</td></tr>
-<tr><td>Comentar calificación</td><td>POST</td><td>/api/profesionales/{id}/comentarios</td></tr>
-<tr><td>Ver reseñas</td><td>GET</td><td>/api/profesionales/{id}/calificaciones</td></tr>
+<tr><td>Puntuar profesional</td><td>POST</td><td>/api/profesionales/{id}/calificacion</td><td>Se reciben IDs de profesional y usuario, un int entre 1 a 5 y un comentario</td></tr>
+<tr><td>Ver reseñas</td><td>GET</td><td>/api/profesionales/{id}/calificaciones</td><td>Ver todas las reseñas de un trabajador y una puntuacion promedio</td></tr>
 </tbody>
 </table>
 
 <h2>🟦 Sistema de Pago y Suscripción</h2>
 <table>
 <thead>
-<tr><th>Funcionalidad</th><th>Método</th><th>Endpoint</th></tr>
+<tr><th>Funcionalidad</th><th>Método</th><th>Endpoint/Descripción</th><th>Parametros/comentarios</th></tr>
 </thead>
 <tbody>
-<tr><td>Seleccionar plan</td><td>POST</td><td>/api/suscripciones/seleccionar</td></tr>
-<tr><td>Cambiar plan</td><td>PUT</td><td>/api/suscripciones/cambiar</td></tr>
-<tr><td>Ver suscripciones</td><td>GET</td><td>/api/suscripciones</td></tr>
-<tr><td>Enviar factura al correo</td><td>POST</td><td>/api/facturacion/enviar</td></tr>
-<tr><td>Notificación de renovación</td><td>GET</td><td>/api/suscripciones/notificacion-renovacion</td></tr>
+<tr><td>Agregar Suscripción</td><td>POST</td><td>/api/suscripciones/seleccionar</td><td>Se recibira id de trabajador y la suscripción que eligió con fecha de vencimiento</td></tr>
+<tr><td>Cambiar plan</td><td>PUT</td><td>/api/suscripciones/cambiar</td><td>se recibe id de trabajador y el nueva suscripcion</td></tr>
+<tr><td>Enviar factura al correo</td><td>Función</td><td>Se activa cada vez que se haga una compra de suscripción</td><td>Mediante nodemailer mandar la facturacion del plan</td></tr>
+<tr><td>Notificación de renovación</td><td>Función</td><td>Función que revise cada cierto tiempo</td><td>Mediante nodemailer mandar que en los proximos dias renovará la suscripción</td></tr>
 </tbody>
 </table>
 
@@ -105,12 +101,8 @@
 </thead>
 <tbody>
 <tr><td>Protección de datos personales</td><td>Middleware</td><td>N/A</td></tr>
-<tr><td>Bloqueo tras intentos fallidos</td><td>POST</td><td>/api/auth/login</td></tr>
-<tr><td>Encriptación de contraseñas</td><td>Middleware</td><td>/register, /usuarios/{id}</td></tr>
-<tr><td>Error por credenciales inválidas</td><td>POST</td><td>/api/auth/login</td></tr>
-<tr><td>Autenticación 2FA (admin)</td><td>POST</td><td>/api/auth/2fa/verify</td></tr>
 <tr><td>Preguntas frecuentes (FAQ)</td><td>GET</td><td>/api/soporte/faq</td></tr>
-<tr><td>Formulario de contacto</td><td>POST</td><td>/api/soporte/contacto</td></tr>
+<tr><td>Formulario de contacto</td><td>GET</td><td>/api/soporte/contacto</td></tr>
 </tbody>
 </table>
 

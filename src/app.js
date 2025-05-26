@@ -24,7 +24,7 @@ app.use((err, req, res, next) => {
 
 // Ruta principal que sirve archivo estático HTML
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'Requerimientos.html'));
+  res.sendFile(path.join(__dirname, '../Requerimientos.html'));
 });
 
 
