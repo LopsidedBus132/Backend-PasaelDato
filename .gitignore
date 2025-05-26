@@ -137,4 +137,4 @@ dist
 
 # Firebase Admin SDK credentials
 firebase-admin-sdk.json
-firestore-key.json
+firebase-key.json
