@@ -47,7 +47,7 @@ CREATE TABLE TRABAJADOR (
     Whatsapp TEXT,
     Facebook TEXT,
     Instagram TEXT,
-    Email TEXT,
+    Email TEXT
 );
 
 CREATE TABLE SUSCRIPCION_TRABAJADOR (
