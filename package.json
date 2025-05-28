@@ -20,11 +20,11 @@
   },
   "homepage": "https://github.com/LopsidedBus132/Backend-PasaelDato#readme",
   "dependencies": {
-    "express": "^4.18.2",
     "cors": "^2.8.5",
-    "helmet": "^7.0.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
     "firebase-admin": "^11.5.0",
-    "pg": "^8.11.0",
-    "dotenv": "^16.0.3"
+    "helmet": "^7.0.0",
+    "pg": "^8.16.0"
   }
 }
