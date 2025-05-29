@@ -5,7 +5,7 @@ const verifyToken = require('../middlewares/verifyToken')
 const userController = require('../controllers/user.controller');
 
 
-router.post('/', [verifyToken], userController.crearUsuario);
+router.post('/', userController.crearUsuario);
 router.get('/perfil', [verifyToken], userController.getUsuario);
 router.patch('/perfil',[verifyToken], userController.updateUsuario)
 router.post('/favoritos',[verifyToken],userController.agregarFavorito)

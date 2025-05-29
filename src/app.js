@@ -7,7 +7,7 @@ const helmet = require('helmet');          // Seguridad HTTP básica
 
 const trabajadorRoutes = require('./routes/trabajador.routes');
 const userRoutes = require('./routes/user.routes');
-
+const calificacionRoutes = require('./routes/calificacion.routes');
 
 const app = express();
 
@@ -31,6 +31,7 @@ app.get('/', (req, res) => {
 // RUTAS
 app.use('/api/usuario', userRoutes)
 app.use('/api/trabajadores', trabajadorRoutes)
+app.use('/api/calificacion', calificacionRoutes)
 
 
 
