@@ -29,8 +29,8 @@ app.get('/', (req, res) => {
 
 
 // RUTAS
-app.use('/user', userRoutes)
-app.use('/trabajadores', trabajadorRoutes)
+app.use('/api/usuario', userRoutes)
+app.use('/api/trabajadores', trabajadorRoutes)
 
 
 
