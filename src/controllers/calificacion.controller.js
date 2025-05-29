@@ -1,18 +1,34 @@
 const CalificacionModel = require('../models/calificacion.model');
+const { admin } = require('../firebase');
 
 /**
+ * Controlador para registrar una calificación.
+ * 
  * @param {import('express').Request} req 
  * @param {import('express').Response} res 
  */
 const puntuarProfesional = async (req, res) => {
-  try {
-    const profesionalId = parseInt(req.params.id, 10);
-    const { firebase_uid_usuario, calificacion, comentario } = req.body;
+  const authHeader = req.headers.authorization;
 
-    if (!firebase_uid_usuario || !calificacion) {
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({
+      success: false,
+      message: 'Token no proporcionado o inválido'
+    });
+  }
+
+  const idToken = authHeader.split('Bearer ')[1];
+
+  try {
+    const decodedToken = await admin.auth().verifyIdToken(idToken);
+    const firebase_uid_usuario = decodedToken.uid;
+    const profesionalId = parseInt(req.params.id, 10);
+    const { calificacion, comentario } = req.body;
+
+    if (!calificacion) {
       return res.status(400).json({
         success: false,
-        message: 'Los campos firebase_uid_usuario y calificacion son obligatorios.'
+        message: 'El campo calificación es obligatorio.'
       });
     }
 
@@ -30,7 +46,7 @@ const puntuarProfesional = async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Error al registrar calificación:', error);
+    console.error('Error al verificar token o registrar calificación:', error);
     res.status(500).json({
       success: false,
       message: 'Ha ocurrido un error interno'
@@ -39,10 +55,10 @@ const puntuarProfesional = async (req, res) => {
 };
 
 /**
- * Controlador para obtener las calificaciones de un trabajador.
+ * Obtener todas las calificaciones de un profesional.
  * 
- * @param {import('express').Request} req - La solicitud HTTP entrante.
- * @param {import('express').Response} res - La respuesta HTTP saliente.
+ * @param {import('express').Request} req 
+ * @param {import('express').Response} res 
  */
 const obtenerCalificaciones = async (req, res) => {
   try {

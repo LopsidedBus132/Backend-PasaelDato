@@ -27,10 +27,19 @@ const insertarCalificacion = async (profesionalId, usuarioUid, calificacion, com
  */
 const obtenerCalificaciones = async (profesionalId) => {
   const result = await db.query(
-    `SELECT firebase_uid_usuario, calificacion, comentario, fecha_resena, verificada
-     FROM RESENA
-     WHERE id_trabajador = $1
-     ORDER BY fecha_resena DESC`,
+    `SELECT 
+       r.firebase_uid_usuario, 
+       r.calificacion, 
+       r.comentario, 
+       r.fecha_resena, 
+       r.verificada,
+       u.nombre as nombre_usuario,
+       u.email as email_usuario,
+       u.foto_perfil as foto_usuario
+     FROM RESENA r
+     INNER JOIN USUARIO u ON r.firebase_uid_usuario = u.firebase_uid
+     WHERE r.id_trabajador = $1
+     ORDER BY r.fecha_resena DESC`,
     [profesionalId]
   );
   return result.rows;
