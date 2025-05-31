@@ -237,6 +237,66 @@ const obtenerTrabajadorConCategorias = async (firebase_uid) => {
   return result.rows[0];
 };
 
+/**
+ * Crea un nuevo trabajador y lo asocia a una categoría.
+ * 
+ * @param {string} firebase_uid - UID del usuario autenticado.
+ * @param {number} id_categoria - ID de la categoría seleccionada.
+ * @param {object} datos - Objeto con todos los campos del trabajador.
+ * @returns {Promise<object>} - Trabajador creado con su categoría.
+ */
+const crearTrabajador = async (firebase_uid, id_categoria, datos) => {
+  const client = await db.connect();
+  try {
+    await client.query('BEGIN');
+
+    // Insertar en TRABAJADOR
+    const trabajadorResult = await client.query(`
+      INSERT INTO TRABAJADOR (
+        firebase_uid, descripcion, precio_hora, disponibilidad,
+        ubicacion, latitud, longitud, radio_atencion_km, fecha_alta,
+        verificado, activo, Whatsapp, Facebook, Instagram, Email
+      ) VALUES (
+        $1, $2, $3, $4,
+        $5, $6, $7, $8, NOW(),
+        $9, $10, $11, $12, $13, $14
+      ) RETURNING id_trabajador;
+    `, [
+      firebase_uid,
+      datos.descripcion,
+      datos.precio_hora,
+      datos.disponibilidad,
+      datos.ubicacion,
+      datos.latitud ?? null,
+      datos.longitud ?? null,
+      datos.radio_atencion_km,
+      datos.verificado ?? false,
+      datos.activo ?? true,
+      datos.Whatsapp,
+      datos.Facebook,
+      datos.Instagram,
+      datos.Email
+    ]);
+
+    const id_trabajador = trabajadorResult.rows[0].id_trabajador;
+
+    // Insertar en TRABAJADOR_CATEGORIA
+    await client.query(`
+      INSERT INTO TRABAJADOR_CATEGORIA (id_trabajador, id_categoria)
+      VALUES ($1, $2);
+    `, [id_trabajador, id_categoria]);
+
+    await client.query('COMMIT');
+    return { id_trabajador, firebase_uid, id_categoria };
+
+  } catch (error) {
+    await client.query('ROLLBACK');
+    throw error;
+  } finally {
+    client.release();
+  }
+};
+
 module.exports = { 
   obtenerTrabajadores,
   obtenerTrabajadorByUid,
@@ -244,4 +304,5 @@ module.exports = {
   obtenerCategorias,
   obtenerTrabajadorById,
   obtenerTrabajadorConCategorias,
+  crearTrabajador,
 };

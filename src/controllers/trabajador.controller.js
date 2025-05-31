@@ -1,4 +1,4 @@
-
+const {admin} = require('../firebase');
 const TrabajadorModel = require('../models/trabajador.model');
 const CalificacionModel = require('../models/calificacion.model');
 
@@ -155,10 +155,62 @@ const getCategorias = async (req, res) => {
   }
 };
 
+/**
+ * Controlador para crear un nuevo trabajador y asociarlo a una categoría.
+ * 
+ * @param {import('express').Request} req 
+ * @param {import('express').Response} res 
+ */
+const registrarTrabajador = async (req, res) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({
+      success: false,
+      message: 'Token no proporcionado o inválido.'
+    });
+  }
+
+  const idToken = authHeader.split('Bearer ')[1];
+
+  try {
+    // Verificar el token
+    const decodedToken = await admin.auth().verifyIdToken(idToken);
+    const firebase_uid = decodedToken.uid;
+
+    // Obtener datos del body
+    const { id_categoria, ...datos } = req.body;
+
+    if (!id_categoria) {
+      return res.status(400).json({
+        success: false,
+        message: 'El campo id_categoria es obligatorio.'
+      });
+    }
+
+    // Crear trabajador
+    const trabajador = await TrabajadorModel.crearTrabajador(firebase_uid, id_categoria, datos);
+
+    return res.status(201).json({
+      success: true,
+      message: 'Trabajador registrado exitosamente.',
+      data: trabajador
+    });
+
+  } catch (error) {
+    console.error('Error al registrar trabajador:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Ha ocurrido un error interno.'
+    });
+  }
+};
+
 module.exports = {
     getTrabajadores,
     getTrabajadorByUid,
     getTrabajadoresByIdCategoria,
     getCategorias,
-    getTrabajadorById
+    getTrabajadorById,
+    registrarTrabajador,
 }

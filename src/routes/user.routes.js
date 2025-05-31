@@ -9,6 +9,7 @@ router.post('/', userController.crearUsuario);
 router.get('/perfil', [verifyToken], userController.getUsuario);
 router.patch('/perfil',[verifyToken], userController.updateUsuario)
 router.post('/favoritos',[verifyToken],userController.agregarFavorito)
+router.get('/favoritos', [verifyToken], userController.obtenerFavoritosUsuario);
 
 
 module.exports = router;

@@ -67,9 +67,28 @@ const agregarFavorito = async (firebase_uid,idTrabajador) =>{
   return result;
 };
 
+/**
+ * Obtiene todos los trabajadores favoritos de un usuario.
+ * 
+ * @param {string} firebase_uid_usuario - UID del usuario autenticado.
+ * @returns {Promise<Array>} - Lista de trabajadores favoritos.
+ */
+const obtenerFavoritosPorUid = async (firebase_uid_usuario) => {
+  const result = await db.query(`
+    SELECT T.*
+    FROM FAVORITO F
+    JOIN TRABAJADOR T ON F.id_trabajador = T.id_trabajador
+    WHERE F.firebase_uid_usuario = $1
+    ORDER BY F.fecha_agregado DESC;
+  `, [firebase_uid_usuario]);
+
+  return result.rows;
+};
+
 module.exports = {
     crearUsuario,
     obtenerPorUid,
     editarPerfil,
-    agregarFavorito
+    agregarFavorito,
+    obtenerFavoritosPorUid,
 };

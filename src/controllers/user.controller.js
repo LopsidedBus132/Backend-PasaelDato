@@ -178,10 +178,49 @@ const agregarFavorito = async (req, res) => {
   }
 }
 
+/**
+ * Devuelve los favoritos de un usuario autenticado.
+ * 
+ * @param {import('express').Request} req 
+ * @param {import('express').Response} res 
+ */
+const obtenerFavoritosUsuario = async (req, res) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({
+      success: false,
+      message: 'Token no proporcionado o inválido'
+    });
+  }
+
+  const idToken = authHeader.split('Bearer ')[1];
+
+  try {
+    const decodedToken = await admin.auth().verifyIdToken(idToken);
+    const firebase_uid = decodedToken.uid;
+
+    const favoritos = await FavoritoModel.obtenerFavoritosPorUid(firebase_uid);
+
+    res.status(200).json({
+      success: true,
+      message: 'Favoritos obtenidos correctamente',
+      data: favoritos
+    });
+
+  } catch (error) {
+    console.error('Error al obtener favoritos:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error interno al obtener favoritos'
+    });
+  }
+};
 
 module.exports = {
   getUsuario,
   crearUsuario,
   updateUsuario,
-  agregarFavorito
+  agregarFavorito,
+  obtenerFavoritosUsuario,
 }
