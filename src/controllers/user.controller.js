@@ -200,7 +200,7 @@ const obtenerFavoritosUsuario = async (req, res) => {
     const decodedToken = await admin.auth().verifyIdToken(idToken);
     const firebase_uid = decodedToken.uid;
 
-    const favoritos = await FavoritoModel.obtenerFavoritosPorUid(firebase_uid);
+    const favoritos = await UsuarioModel.obtenerFavoritosPorUid(firebase_uid);
 
     res.status(200).json({
       success: true,
