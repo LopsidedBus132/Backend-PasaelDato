@@ -1,5 +1,6 @@
-const UsuarioModel = require('../models/user.model');
 const { admin } = require('../firebase');
+const UsuarioModel = require('../models/user.model');
+const CalificacionModel = require('../models/calificacion.model');
 
 
 /**
@@ -179,7 +180,7 @@ const agregarFavorito = async (req, res) => {
 }
 
 /**
- * Devuelve los favoritos de un usuario autenticado.
+ * Devuelve los trabajadores favoritos de un usuario autenticado, con su calificación promedio.
  * 
  * @param {import('express').Request} req 
  * @param {import('express').Response} res 
@@ -202,10 +203,27 @@ const obtenerFavoritosUsuario = async (req, res) => {
 
     const favoritos = await UsuarioModel.obtenerFavoritosPorUid(firebase_uid);
 
+    if (!favoritos || favoritos.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'No se encontraron trabajadores favoritos'
+      });
+    }
+
+    const favoritosConCalificacion = await Promise.all(
+      favoritos.map(async (trabajador) => {
+        const { promedio } = await CalificacionModel.obtenerPromedioCalificaciones(trabajador.id_trabajador);
+        return {
+          ...trabajador,
+          calificacion: Number(promedio)
+        };
+      })
+    );
+
     res.status(200).json({
       success: true,
       message: 'Favoritos obtenidos correctamente',
-      data: favoritos
+      data: favoritosConCalificacion
     });
 
   } catch (error) {
