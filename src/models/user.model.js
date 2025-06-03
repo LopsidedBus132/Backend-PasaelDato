@@ -68,22 +68,56 @@ const agregarFavorito = async (firebase_uid,idTrabajador) =>{
 };
 
 /**
- * Obtiene todos los trabajadores favoritos de un usuario.
+ * Obtiene todos los trabajadores favoritos de un usuario, con datos completos.
  * 
  * @param {string} firebase_uid_usuario - UID del usuario autenticado.
- * @returns {Promise<Array>} - Lista de trabajadores favoritos.
+ * @returns {Promise<Array>} - Lista de trabajadores favoritos con info detallada.
  */
 const obtenerFavoritosPorUid = async (firebase_uid_usuario) => {
   const result = await db.query(`
-    SELECT T.*
-    FROM FAVORITO F
-    JOIN TRABAJADOR T ON F.id_trabajador = T.id_trabajador
-    WHERE F.firebase_uid_usuario = $1
-    ORDER BY F.fecha_agregado DESC;
+    SELECT 
+      t.id_trabajador,
+      t.firebase_uid,
+      u.nombre,
+      u.email,
+      u.telefono,
+      u.foto_perfil,
+      u.direccion AS direccion_usuario,
+      t.descripcion,
+      t.precio_hora,
+      t.disponibilidad,
+      t.ubicacion,
+      t.latitud,
+      t.longitud,
+      t.radio_atencion_km,
+      t.fecha_alta,
+      t.verificado,
+      t.activo,
+      c.nombre AS nombre_categoria,
+      c.descripcion AS descripcion_categoria,
+      c.icono AS icono_categoria,
+      tc.categoria_principal,
+      f.fecha_agregado
+    FROM 
+      FAVORITO f
+    JOIN 
+      TRABAJADOR t ON f.id_trabajador = t.id_trabajador
+    JOIN 
+      USUARIO u ON t.firebase_uid = u.firebase_uid
+    JOIN 
+      TRABAJADOR_CATEGORIA tc ON t.id_trabajador = tc.id_trabajador
+    JOIN 
+      CATEGORIA c ON tc.id_categoria = c.id_categoria
+    WHERE 
+      f.firebase_uid_usuario = $1 
+      AND t.activo = true
+    ORDER BY 
+      f.fecha_agregado DESC, tc.categoria_principal DESC, t.verificado DESC;
   `, [firebase_uid_usuario]);
 
   return result.rows;
 };
+
 
 module.exports = {
     crearUsuario,
