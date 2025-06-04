@@ -60,6 +60,16 @@ const getTrabajadores = async (req, res) => {
  */
     const getTrabajadorById = async (req, res) => {
       try {
+
+        const authHeader = req.headers.authorization;
+
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+          return res.status(401).json({
+            success: false,
+            message: 'Token no proporcionado o inválido.'
+          });
+        }
+
         const id = req.params.id;
         const trabajador = await TrabajadorModel.obtenerTrabajadorById(id);
   
@@ -70,11 +80,22 @@ const getTrabajadores = async (req, res) => {
           });
         }
   
+
+
+      const idToken = authHeader.split('Bearer ')[1];
+
+      // Verificar el token
+      const decodedToken = await admin.auth().verifyIdToken(idToken);
+      const firebase_uid = decodedToken.uid;
+
+
+      const esFavorito = await TrabajadorModel.esFavorito(firebase_uid, id);
   
         const { promedio } = await CalificacionModel.obtenerPromedioCalificaciones(trabajador.id_trabajador);
         const trabajadorConCalificacion = {
           ...trabajador,
-          calificacion: Number(promedio)
+          calificacion: Number(promedio),
+          esFavorito
         };
   
         res.json({success: true, message: 'Trabajadores obtenidos correctamente.', data: trabajadorConCalificacion});
@@ -179,9 +200,9 @@ const registrarTrabajador = async (req, res) => {
     const firebase_uid = decodedToken.uid;
 
     // Obtener datos del body
-    const { id_categoria, ...datos } = req.body;
+    const { idCategoria, ...datos } = req.body;
 
-    if (!id_categoria) {
+    if (!idCategoria) {
       return res.status(400).json({
         success: false,
         message: 'El campo id_categoria es obligatorio.'
@@ -189,7 +210,7 @@ const registrarTrabajador = async (req, res) => {
     }
 
     // Crear trabajador
-    const trabajador = await TrabajadorModel.crearTrabajador(firebase_uid, id_categoria, datos);
+    const trabajador = await TrabajadorModel.crearTrabajador(firebase_uid, idCategoria, datos);
 
     return res.status(201).json({
       success: true,

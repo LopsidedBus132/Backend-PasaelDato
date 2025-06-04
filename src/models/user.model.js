@@ -34,6 +34,14 @@ const obtenerPorUid = async (firebase_uid) => {
   return result.rows[0];
 };
 
+const esTrabajadorPorUid = async (firebase_uid) => {
+  const result = await db.query(
+    'SELECT * FROM TRABAJADOR WHERE firebase_uid = $1',
+    [firebase_uid]
+  );
+  return result.rows;
+}
+
 const editarPerfil = async (firebase_uid,datosActualizado) => {
   const campos = Object.keys(datosActualizado).filter(
   (clave) => datosActualizado[clave] !== undefined
@@ -64,6 +72,16 @@ const agregarFavorito = async (firebase_uid,idTrabajador) =>{
     VALUES ($1,$2, CURRENT_TIMESTAMP) RETURNING *`,
     [firebase_uid,idTrabajador]
   )
+  return result;
+};
+
+const quitarFavorito = async (firebase_uid, idTrabajador) => {
+  const result = await db.query(`
+    DELETE FROM FAVORITO 
+    WHERE firebase_uid_usuario = $1 AND id_trabajador = $2
+    RETURNING *`,
+    [firebase_uid, idTrabajador]
+  );
   return result;
 };
 
@@ -124,5 +142,7 @@ module.exports = {
     obtenerPorUid,
     editarPerfil,
     agregarFavorito,
+    quitarFavorito,
     obtenerFavoritosPorUid,
+    esTrabajadorPorUid
 };

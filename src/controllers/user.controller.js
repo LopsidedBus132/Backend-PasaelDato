@@ -55,18 +55,24 @@ const getUsuario = async (req, res) => {
     const firebase_uid = decodedToken.uid;
 
     const usuario = await UsuarioModel.obtenerPorUid(firebase_uid);
-
     if (!usuario) {
       return res.status(404).json({
         success: false,
         message: 'Usuario no encontrado'
       });
     }
+    
+    let esTrabajador;
+    if ((await UsuarioModel.esTrabajadorPorUid(firebase_uid)).length > 0)
+      esTrabajador = true;
+    else
+      esTrabajador = false;
+
 
     return res.status(200).json({
       success: true,
       message: 'Usuario obtenido correctamente',
-      data: usuario
+      data: {...usuario, esTrabajador}
     });
 
   } catch (error) {
@@ -179,6 +185,60 @@ const agregarFavorito = async (req, res) => {
   }
 }
 
+
+/**
+ * @param {import('express').Request} req 
+ * @param {import('express').Response} res 
+ */
+const quitarFavorito = async (req, res) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({
+      success: false,
+      message: 'Token no proporcionado o inválido'
+    });
+  }
+
+  const idToken = authHeader.split('Bearer ')[1];
+  
+  try {
+    const decodedToken = await admin.auth().verifyIdToken(idToken);
+    const firebase_uid = decodedToken.uid;
+    const trabajador = req.body.idTrabajador;
+    
+    if (!trabajador) {
+      return res.status(400).json({
+        success: false,
+        message: 'ID del trabajador es requerido'
+      });
+    }
+
+    const result = await UsuarioModel.quitarFavorito(firebase_uid, trabajador);
+    
+    if (!result || result.rowCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'Favorito no encontrado o ya fue eliminado'
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: 'Favorito eliminado correctamente'
+    });
+
+  } catch (error) {
+    console.error('Error al verificar token o al eliminar favorito:', error);
+
+    return res.status(500).json({
+      success: false,
+      message: 'Ha ocurrido un error interno'
+    });
+  }
+};
+
+
 /**
  * Devuelve los trabajadores favoritos de un usuario autenticado, con su calificación promedio.
  * 
@@ -240,5 +300,6 @@ module.exports = {
   crearUsuario,
   updateUsuario,
   agregarFavorito,
+  quitarFavorito,
   obtenerFavoritosUsuario,
 }

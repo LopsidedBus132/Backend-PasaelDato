@@ -39,7 +39,6 @@ const obtenerTrabajadorByUid = async (firebase_uid) => {
       t.id_trabajador,
       t.firebase_uid,
       u.nombre,
-      u.email,
       u.telefono,
       u.foto_perfil,
       u.direccion AS direccion_usuario,
@@ -53,7 +52,7 @@ const obtenerTrabajadorByUid = async (firebase_uid) => {
       t.fecha_alta,
       t.verificado,
       t.activo,
-      t.email AS email_contacto
+      t.email
     FROM 
       TRABAJADOR t
     JOIN 
@@ -264,7 +263,7 @@ const crearTrabajador = async (firebase_uid, id_categoria, datos) => {
     `, [
       firebase_uid,
       datos.descripcion,
-      datos.precio_hora,
+      Number(datos.precio_hora),
       datos.disponibilidad,
       datos.ubicacion,
       datos.latitud ?? null,
@@ -272,10 +271,10 @@ const crearTrabajador = async (firebase_uid, id_categoria, datos) => {
       datos.radio_atencion_km,
       datos.verificado ?? false,
       datos.activo ?? true,
-      datos.Whatsapp,
-      datos.Facebook,
-      datos.Instagram,
-      datos.Email
+      datos.whatsapp,
+      datos.facebook ?? null,
+      datos.instagram ?? null,
+      datos.email
     ]);
 
     const id_trabajador = trabajadorResult.rows[0].id_trabajador;
@@ -297,6 +296,25 @@ const crearTrabajador = async (firebase_uid, id_categoria, datos) => {
   }
 };
 
+
+/**
+ * Verifica si un trabajador ya es favorito de un usuario específico.
+ * 
+ * @param {string} firebase_uid_usuario - UID del usuario.
+ * @param {number} id_trabajador - ID del trabajador.
+ * @returns {Promise<boolean>} - true si es favorito, false si no lo es.
+ */
+const esFavorito = async (firebase_uid_usuario, id_trabajador) => {
+  const result = await db.query(`
+    SELECT 1 FROM FAVORITO 
+    WHERE firebase_uid_usuario = $1 AND id_trabajador = $2
+    LIMIT 1`,
+    [firebase_uid_usuario, id_trabajador]
+  );
+  
+  return result.rows.length > 0;
+};
+
 module.exports = { 
   obtenerTrabajadores,
   obtenerTrabajadorByUid,
@@ -305,4 +323,5 @@ module.exports = {
   obtenerTrabajadorById,
   obtenerTrabajadorConCategorias,
   crearTrabajador,
+  esFavorito
 };

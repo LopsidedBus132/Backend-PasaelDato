@@ -81,10 +81,10 @@ CREATE TABLE RESENA (
 );
 
 CREATE TABLE FAVORITO (
-    id_favorito SERIAL PRIMARY KEY,
     firebase_uid_usuario TEXT REFERENCES USUARIO(firebase_uid),
     id_trabajador INT REFERENCES TRABAJADOR(id_trabajador),
-    fecha_agregado TIMESTAMPTZ
+    fecha_agregado TIMESTAMPTZ,
+    PRIMARY KEY (firebase_uid_usuario, id_trabajador)
 );
 
 CREATE TABLE BUSQUEDA (
