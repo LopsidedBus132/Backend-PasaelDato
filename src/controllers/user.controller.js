@@ -62,17 +62,17 @@ const getUsuario = async (req, res) => {
       });
     }
     
-    let esTrabajador;
-    if ((await UsuarioModel.esTrabajadorPorUid(firebase_uid)).length > 0)
-      esTrabajador = true;
+    const trabajador = await UsuarioModel.esTrabajadorPorUid(firebase_uid);
+    let usuarioCompleto;
+    if (trabajador.length > 0)
+      usuarioCompleto = {...usuario, id_trabajador: trabajador[0].id_trabajador};
     else
-      esTrabajador = false;
-
+      usuarioCompleto = usuario;
 
     return res.status(200).json({
       success: true,
       message: 'Usuario obtenido correctamente',
-      data: {...usuario, esTrabajador}
+      data: usuarioCompleto
     });
 
   } catch (error) {
