@@ -26,7 +26,7 @@ const puntuarProfesional = async (req, res) => {
     res.status(201).json({
       success: true,
       message: 'Calificación registrada correctamente.',
-      objeto: resultado
+      data: resultado
     });
 
   } catch (error) {
@@ -55,7 +55,7 @@ const obtenerCalificaciones = async (req, res) => {
       return res.json({
         success: true,
         message: 'Este trabajador aún no tiene calificaciones registradas.',
-        objeto: {
+        data: {
           promedio: 0.0,
           reseñas: []
         }
@@ -69,7 +69,7 @@ const obtenerCalificaciones = async (req, res) => {
     res.json({
       success: true,
       message: 'Calificaciones obtenidas correctamente.',
-      objeto: {
+      data: {
         promedio: promedioRedondeado,
         reseñas
       }
