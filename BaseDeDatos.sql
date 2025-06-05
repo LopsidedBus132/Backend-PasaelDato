@@ -28,7 +28,8 @@ CREATE TABLE PLAN_SUSCRIPCION (
     insignia_premium BOOLEAN,
     analytics_avanzados BOOLEAN,
     max_categorias INT,
-    activo BOOLEAN
+    activo BOOLEAN,
+    duracion INT
 );
 
 CREATE TABLE TRABAJADOR (
