@@ -28,7 +28,8 @@ CREATE TABLE PLAN_SUSCRIPCION (
     insignia_premium BOOLEAN,
     analytics_avanzados BOOLEAN,
     max_categorias INT,
-    activo BOOLEAN
+    activo BOOLEAN,
+    duracion INT
 );
 
 CREATE TABLE TRABAJADOR (
@@ -47,7 +48,7 @@ CREATE TABLE TRABAJADOR (
     Whatsapp TEXT,
     Facebook TEXT,
     Instagram TEXT,
-    Email TEXT,
+    Email TEXT
 );
 
 CREATE TABLE SUSCRIPCION_TRABAJADOR (
