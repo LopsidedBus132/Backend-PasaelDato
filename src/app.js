@@ -30,7 +30,7 @@ app.get('/', (req, res) => {
 
 // RUTAS
 app.use('/api/usuario', userRoutes)
-app.use('/api/profesional', trabajadorRoutes)
+app.use('/api/profesionales', trabajadorRoutes)
 app.use('/api/calificacion', calificacionRoutes)
 
 
