@@ -1,18 +1,42 @@
+const admin = require('../firebase');
 const CalificacionModel = require('../models/calificacion.model');
 
 /**
+ * Controlador para puntuar a un profesional.
+ * Requiere autenticación mediante Firebase (middleware verifyFirebaseToken).
+ * 
  * @param {import('express').Request} req 
  * @param {import('express').Response} res 
  */
 const puntuarProfesional = async (req, res) => {
   try {
     const profesionalId = parseInt(req.params.id, 10);
+    const uidAutenticado = req.user.uid; // UID extraído del token verificado
+
     const { firebase_uid_usuario, calificacion, comentario } = req.body;
 
+    // Validación de campos obligatorios
     if (!firebase_uid_usuario || !calificacion) {
       return res.status(400).json({
         success: false,
         message: 'Los campos firebase_uid_usuario y calificacion son obligatorios.'
+      });
+    }
+
+    // Protección contra suplantación
+    if (firebase_uid_usuario !== uidAutenticado) {
+      return res.status(403).json({
+        success: false,
+        message: 'No tienes permiso para realizar esta acción.'
+      });
+    }
+
+    // (Opcional) Validar que el usuario exista en Firebase
+    const usuario = await admin.auth().getUser(firebase_uid_usuario);
+    if (!usuario) {
+      return res.status(404).json({
+        success: false,
+        message: 'Usuario de Firebase no encontrado.'
       });
     }
 
@@ -41,8 +65,8 @@ const puntuarProfesional = async (req, res) => {
 /**
  * Controlador para obtener las calificaciones de un trabajador.
  * 
- * @param {import('express').Request} req - La solicitud HTTP entrante.
- * @param {import('express').Response} res - La respuesta HTTP saliente.
+ * @param {import('express').Request} req 
+ * @param {import('express').Response} res 
  */
 const obtenerCalificaciones = async (req, res) => {
   try {

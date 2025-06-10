@@ -8,6 +8,8 @@ const helmet = require('helmet');          // Seguridad HTTP básica
 const trabajadorRoutes = require('./routes/trabajador.routes');
 const userRoutes = require('./routes/user.routes');
 const calificacionRoutes = require('./routes/calificacion.routes');
+const suscripcionRoutes = require('./routes/suscripcion.routes')
+const comunicacionRoutes = require('./routes/comuniacion.routes');
 
 const app = express();
 
@@ -32,8 +34,11 @@ app.get('/', (req, res) => {
 app.use('/api/usuario', userRoutes)
 app.use('/api/profesionales', trabajadorRoutes)
 app.use('/api/calificacion', calificacionRoutes)
+app.use('/api/suscripcion',suscripcionRoutes)
+app.use('/api/comunicacion', comunicacionRoutes)
 
-
+const verificarSuscripcionesVencidas = require('./jobs/verificarSuscripciones');
+verificarSuscripcionesVencidas();
 
 
 module.exports = app;
