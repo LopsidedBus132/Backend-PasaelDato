@@ -1,4 +1,5 @@
 const CalificacionModel = require('../models/calificacion.model');
+const { admin } = require('../firebase');
 
 /**
  * @param {import('express').Request} req 
@@ -6,19 +7,26 @@ const CalificacionModel = require('../models/calificacion.model');
  */
 const puntuarProfesional = async (req, res) => {
   try {
-    const profesionalId = parseInt(req.params.id, 10);
-    const { firebase_uid_usuario, calificacion, comentario } = req.body;
+    const authHeader = req.headers.authorization;
 
-    if (!firebase_uid_usuario || !calificacion) {
+    const idToken = authHeader.split('Bearer ')[1];
+
+    const decodedToken = await admin.auth().verifyIdToken(idToken);
+    const firebase_uid = decodedToken.uid;
+
+    const profesionalId = parseInt(req.params.id, 10);
+    const { calificacion, comentario } = req.body;
+
+    if (!calificacion) {
       return res.status(400).json({
         success: false,
-        message: 'Los campos firebase_uid_usuario y calificacion son obligatorios.'
+        message: 'El campo calificacion son obligatorios.'
       });
     }
 
     const resultado = await CalificacionModel.insertarCalificacion(
       profesionalId,
-      firebase_uid_usuario,
+      firebase_uid,
       calificacion,
       comentario
     );
